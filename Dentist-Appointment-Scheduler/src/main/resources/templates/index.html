@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>Assignment-1</title>
+		<link rel="stylesheet" type="text/css" href="/style.css"/>
+	</head>
+	<body>
+	
+		<header>
+			<h1>Assignment-1 Appointment Management</h1>
+		</header>
+		
+		<main>
+			<section>
+				<h2>All Appointments</h2>
+				<table th:if="${apptList != null and !apptList.empty}">
+					<tr>
+						<th>ID</th>
+						<th>Purpose</th>
+						<th>Date</th>
+						<th>Edit</th>
+						<th>Delete</th>
+					</tr>
+					<tr th:each="appt : ${apptList}">
+						<td th:text="${appt.id}"></td>
+						<td th:text="${appt.purpose}"></td>
+						<td th:text="${appt.apptDate}"></td>
+						<td class="action"><a th:href="'/edit/' + ${appt.id}">Edit</a></td>
+						<td class="action"><a th:href="'/delete/' + ${appt.id}">Delete</a></td>
+					</tr>
+				</table>
+			</section>
+			
+			<section>
+				<h2 th:text="${action} + ' an Appointment'"></h2>
+				<form action="#" th:action="${formAction}" th:object="${appt}" method="post">
+					<p th:if="${action == 'Edit'}">
+						<span th:text="${'ID: ' + editId}"></span>
+					</p>
+					<div class="inputgroup">
+						<p>Purpose of appointment</p>
+						<input type="text" th:field="*{purpose}" placeholder="Purpose"/>
+					</div>
+					<div class="inputgroup">
+						<p>Date & Time</p>
+						<input type="datetime-local" th:field="*{apptDate}"/>
+					</div>
+
+					<input type="submit" th:value="${action} + ' Appointment'"/>
+				</form>
+			</section>
+		</main>
+</body>
+</html>
